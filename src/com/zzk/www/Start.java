@@ -3,7 +3,6 @@ package com.zzk.www;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 
 public class Start {
     public static void main(String[] args) {
@@ -18,8 +17,12 @@ class MyFrame extends JFrame implements ActionListener {
     String buttonLabel2="Stop";
     int width=600;
     int height=500;
+
+    GetLine getLine = new GetLine();
+    Data data = new Data();
+
     //定时器
-    Timer timer=new Timer(150,this);
+    Timer timer=new Timer(120,this);
     //构造器，初始化
     public MyFrame(){
         setVisible(true);
@@ -43,11 +46,15 @@ class MyFrame extends JFrame implements ActionListener {
         //按钮的事件监听
         button1.addActionListener(this::actionPerformed);
         button2.addActionListener(this::actionPerformed);
+        //获取行数并赋值
+        int line=getLine.getLine(0);
+        //将行数值传递
+        data.setLine(line);
     }
     //增加背景图片
-    final ImageIcon bgImageIcon = new ImageIcon(Objects.requireNonNull(MyFrame.class.getClassLoader().getResource("/resources/bg.png")));
+    final ImageIcon bgImageIcon = new ImageIcon(MyFrame.class.getResource("/resources/bg.png"));
     final Image image = bgImageIcon.getImage();
-    //利用画板，画上文字内容，利用repaint，使名字闪动
+    //利用画板，画上文字内容
     @Override
     public void paint(Graphics g) {
         //画上背景图片，并且自适应窗口大小
@@ -68,10 +75,9 @@ class MyFrame extends JFrame implements ActionListener {
         }
         randomStart();
     }
-    //名字页面的刷新
+    //名字页面的刷新，利用repaint，使名字闪动。
     public void randomStart(){
         if (isStart==true){
-            Data data = new Data();
             data.randomName();
             //获取Data类中的随机名字
             name=data.getTheName();
